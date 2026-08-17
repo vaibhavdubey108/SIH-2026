@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedSafe AI — Predictive Medicine Expiry & Inventory Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,500;0,600;0,700;0,800;0,900;1,600&family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+
+<body>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <div class="brand">
+                <svg class="mark" viewBox="0 0 32 32" fill="none">
+                    <rect x="1" y="1" width="30" height="30" rx="9" fill="#12213B" />
+                    <path d="M16 8v16M8 16h16" stroke="#3D4FD1" stroke-width="3" stroke-linecap="round" />
+                    <circle cx="16" cy="16" r="4.4" fill="#F2F4F7" />
+                </svg>
+                MedSafe AI
+            </div>
+            <div class="nav-links">
+                <a href="#problem">Problem</a>
+                <a href="#not-ai">AI vs Rules</a>
+                <a href="#architecture">How it thinks</a>
+                <a href="#features">Features</a>
+                <a href="#tech">Tech</a>
+            </div>
+            <a href="#contact" class="nav-cta">SIH25 Prototype Brief</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="wrap hero-grid">
+            <div>
+                <span class="eyebrow">SIH — Healthcare &amp; MedTech · Software</span>
+                <h1>Every expiry date is a countdown.<br>Most pharmacies find out <em>too late.</em></h1>
+                <p class="lead">MedSafe AI reads a medicine label, predicts the probability it will expire unused, and
+                    tells the pharmacist which batch to move first — before the loss happens, not after.</p>
+                <div class="hero-ctas">
+                    <a href="#architecture" class="btn-primary">See how the AI thinks →</a>
+                    <a href="#not-ai" class="btn-secondary">Is this really AI?</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat"><b>8</b><span>step pipeline —<br>scan to disposal</span></div>
+                    <div class="stat"><b>3</b><span>genuine AI models,<br>not just OCR</span></div>
+                    <div class="stat"><b>0</b><span>expired batches<br>reach a patient</span></div>
+                </div>
+            </div>
+
+            <div class="scanner-card reveal">
+                <div class="scanner-frame">
+                    <div class="grid-lines"></div>
+                    <div class="label-box">
+                        <div class="row"><span>BATCH P-1234</span><span>MFG 08/2025</span></div>
+                        <div class="medname">Paracetamol 500mg</div>
+                        <span class="stamp">EXP&nbsp;09&#8202;/&#8202;2027</span>
+                    </div>
+                    <div class="scan-line"></div>
+                    <div class="readout">
+                        <div class="left">
+                            <span>Predicted outcome</span>
+                            <b>Unlikely to sell out in time</b>
+                        </div>
+                        <div class="risk-num">87%</div>
+                    </div>
+                </div>
+                <div class="caption-line">
+                    <span class="risk-tag risk-high"><span class="dot"></span>HIGH EXPIRY RISK</span>
+                    <span class="mono" style="font-size:12px;color:var(--ink-soft)">— not a date comparison, a
+                        demand-aware prediction</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="section" id="problem">
+        <div class="wrap">
+            <div class="section-head reveal">
+                <span class="eyebrow">The Gap</span>
+                <h2>Expiry tracking exists. Expiry <em>prevention</em> doesn't.</h2>
+                <p>Pharmacies and hospitals manage thousands of batches by hand. Near-expiry stock stays invisible until
+                    it's already waste — and today's inventory tools only tell you what already happened.</p>
+            </div>
+            <div class="stat-grid reveal">
+                <div class="stat-cell"><b>1000s</b><span>of medicine batches tracked manually per pharmacy, batch by
+                        batch</span></div>
+                <div class="stat-cell"><b>Late</b><span>near-expiry stock is usually noticed only once it's
+                        unsellable</span></div>
+                <div class="stat-cell"><b>₹ Loss</b><span>overstocking + missed rotation quietly erodes margins</span>
+                </div>
+                <div class="stat-cell"><b>Tracking ≠</b><span>most existing systems log expiry — none of them predict
+                        risk</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-alt" id="not-ai">
+        <div class="wrap">
+            <div class="section-head reveal">
+                <span class="eyebrow">Honest Architecture</span>
+                <h2>Not everything in MedSafe AI is AI — on purpose.</h2>
+                <p>If a task can be solved with <code class="mono">if expiry &lt; today</code>, we solve it that way. AI
+                    only earns its place where prediction, not comparison, is required.</p>
+            </div>
+
+            <div class="compare-grid reveal">
+                <div class="compare-card rule">
+                    <div class="compare-title">
+                        <span class="tag tag-notai">DETERMINISTIC</span>
+                        <h3>Rule engine handles this</h3>
+                    </div>
+                    <ul class="compare-list">
+                        <li><span class="ico">⚙️</span> Store medicine, batch &amp; stock in the database</li>
+                        <li><span class="ico">⚙️</span> Calculate <code
+                                class="mono">daysRemaining = expiry − today</code></li>
+                        <li><span class="ico">⚙️</span> Compare <code class="mono">expiry &lt; today</code> and flag it
+                        </li>
+                        <li><span class="ico">⚙️</span> Fire a reminder or notification</li>
+                        <li><span class="ico">⚙️</span> Block an already-expired batch from dispensing</li>
+                        <li><span class="ico">⚙️</span> Decode a barcode or QR value</li>
+                    </ul>
+                </div>
+                <div class="compare-card ai">
+                    <div class="compare-title">
+                        <span class="tag tag-ai">PREDICTIVE</span>
+                        <h3>AI earns its place here</h3>
+                    </div>
+                    <ul class="compare-list">
+                        <li><span class="ico">🧠</span> Reading a messy, tilted, handwritten-style expiry stamp off real
+                            packaging</li>
+                        <li><span class="ico">🧠</span> Forecasting next month's demand from consumption history</li>
+                        <li><span class="ico">🧠</span> Scoring the probability a batch goes unused before it expires
+                        </li>
+                        <li><span class="ico">🧠</span> Flagging inventory or wastage that breaks from normal patterns
+                        </li>
+                        <li><span class="ico">🧠</span> Ranking which batch to move first across the whole stockroom
+                        </li>
+                        <li><span class="ico">🧠</span> Explaining *why* a batch was scored high-risk</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="quote-block reveal">
+                <div class="mark">“</div>
+                <div>
+                    <p>Basic expiry detection can be done with conventional programming — comparing a date needs no
+                        model. We use AI only where prediction is required: forecasting demand, estimating the odds a
+                        batch outlives its shelf life, catching abnormal inventory behaviour, and explaining the
+                        recommendation behind it. That's what turns reactive expiry tracking into predictive expiry-risk
+                        management.</p>
+                    <div class="attrib">— the answer we give when a judge asks "why AI, I could write this in Java"
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="architecture">
+        <div class="wrap">
+            <div class="section-head reveal">
+                <span class="eyebrow">How It Thinks</span>
+                <h2>From a photo of a label to a stockroom decision.</h2>
+                <p>Two independent signals — what's printed on the packet, and how the medicine actually moves — meet
+                    inside one risk model before anything gets recommended.</p>
+            </div>
+
+            <div class="pipeline reveal">
+                <div class="pipe-node accent"><span class="k">Input</span><span class="v">Medicine label photo</span>
+                </div>
+                <div class="pipe-arrow"></div>
+                <div class="pipe-node"><span class="k">Computer Vision + OCR</span><span class="v">Detect &amp; read the
+                        expiry stamp</span></div>
+                <div class="pipe-arrow"></div>
+                <div class="pipe-node"><span class="k">AI Field Extraction</span><span class="v">Medicine · Batch · MFG
+                        · EXP</span></div>
+                <div class="pipe-arrow"></div>
+                <div class="pipe-node"><span class="k">Store</span><span class="v">Medicine database</span></div>
+
+                <div style="height:26px; position:relative; width:2px; background:var(--line);"></div>
+
+                <div class="pipe-branch">
+                    <div class="branch-col">
+                        <div class="pipe-node"><span class="k">Signal A</span><span class="v">Historical
+                                consumption</span></div>
+                        <div class="pipe-arrow"></div>
+                        <div class="pipe-node accent"><span class="k">AI</span><span class="v">Demand forecast</span>
+                        </div>
+                    </div>
+                    <div class="branch-col">
+                        <div class="pipe-node"><span class="k">Signal B</span><span class="v">Expiry date on
+                                record</span></div>
+                        <div class="pipe-arrow"></div>
+                        <div class="pipe-node"><span class="k">Rule</span><span class="v">Days remaining</span></div>
+                    </div>
+                </div>
+
+                <div class="pipe-arrow"></div>
+                <div class="risk-score-node">
+                    <span class="k">AI Risk Model</span>
+                    <span class="v">Expiry Risk Score — 87%</span>
+                </div>
+                <div class="pipe-arrow"></div>
+                <div class="pipe-node accent"><span class="k">Explainable AI</span><span class="v">"High risk because
+                        consumption is low"</span></div>
+                <div class="pipe-arrow"></div>
+
+                <div class="pipe-out">
+                    <div class="pipe-node"><span class="k">Action</span><span class="v">FEFO priority</span></div>
+                    <div class="pipe-node"><span class="k">Action</span><span class="v">Smart alert</span></div>
+                    <div class="pipe-node"><span class="k">Action</span><span class="v">Procurement review</span></div>
+                </div>
+                <div class="pipe-arrow"></div>
+                <div class="pipe-node" style="border-color:rgba(214,72,61,0.4)"><span class="k">Rule engine —
+                        safety-critical</span><span class="v">Already expired? → 🚫 Block dispensing</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-alt">
+        <div class="wrap">
+            <div class="section-head reveal">
+                <span class="eyebrow">Risk In Action</span>
+                <h2>Same expiry date. Completely different risk.</h2>
+                <p>A date comparison would treat these two batches identically. The AI model doesn't — because it looks
+                    at how fast each one actually moves.</p>
+            </div>
+
+            <div class="scenario-grid reveal">
+                <div class="med-card">
+                    <div class="head">
+                        <h4>Medicine A</h4>
+                        <span class="risk-tag risk-high"><span class="dot"></span>87% RISK</span>
+                    </div>
+                    <div class="body">
+                        <div class="kv"><span class="k">Stock</span><span class="v">1,000 units</span></div>
+                        <div class="kv"><span class="k">Days to expiry</span><span class="v">20 days</span></div>
+                        <div class="kv"><span class="k">Avg. monthly demand</span><span class="v">100 units</span></div>
+                        <div class="med-verdict hot">At current pace, ~800 units will still be unsold at expiry.
+                            Prioritize under FEFO and hold procurement.</div>
+                    </div>
+                </div>
+                <div class="med-card">
+                    <div class="head">
+                        <h4>Medicine B</h4>
+                        <span class="risk-tag risk-low"><span class="dot"></span>12% RISK</span>
+                    </div>
+                    <div class="body">
+                        <div class="kv"><span class="k">Stock</span><span class="v">1,000 units</span></div>
+                        <div class="kv"><span class="k">Days to expiry</span><span class="v">20 days</span></div>
+                        <div class="kv"><span class="k">Avg. monthly demand</span><span class="v">1,500 units</span>
+                        </div>
+                        <div class="med-verdict cool">Demand comfortably clears the stock before expiry. No action
+                            needed — safe to hold current shelf position.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="features">
+        <div class="wrap">
+            <div class="section-head reveal">
+                <span class="eyebrow">What Ships In The Prototype</span>
+                <h2>One platform, from the shelf to the disposal log.</h2>
+            </div>
+            <div class="feat-grid reveal">
+                <div class="feat-card">
+                    <div class="feat-icon">📷</div>
+                    <h4>AI image scanning</h4>
+                    <p>Photograph any medicine box and let computer vision find the printed expiry stamp, however it's
+                        formatted.</p>
+                </div>
+                <div class="feat-card">
+                    <div class="feat-icon">🔤</div>
+                    <h4>OCR field extraction</h4>
+                    <p>Turns messy, tilted or blurry packaging text into clean medicine, batch and date fields.</p>
+                </div>
+                <div class="feat-card">
+                    <div class="feat-icon">🏷️</div>
+                    <h4>Barcode / QR verification</h4>
+                    <p>Cross-checks scanned text against barcode data for a second layer of confidence.</p>
+                </div>
+                <div class="feat-card">
+                    <div class="feat-icon">📈</div>
+                    <h4>Demand forecasting</h4>
+                    <p>Learns seasonal and branch-level consumption trends to predict next month's usage.</p>
+                </div>
+                <div class="feat-card">
+                    <div class="feat-icon">🧭</div>
+                    <h4>Expiry-risk prediction</h4>
+                    <p>Scores every batch on the probability it goes unused before its shelf life ends.</p>
+                </div>
+                <div class="feat-card">
+                    <div class="feat-icon">🔁</div>
+                    <h4>Smart FEFO recommendations</h4>
+                    <p>Tells staff exactly which batch to dispense first, ranked by real risk — not just date order.</p>
+                </div>
+                <div class="feat-card">
+                    <div class="feat-icon">🚫</div>
+                    <h4>Dispensing safety block</h4>
+                    <p>A deterministic rule engine — not the AI — refuses to let an already-expired batch go out.</p>
+                </div>
+                <div class="feat-card">
+                    <div class="feat-icon">⚠️</div>
+                    <h4>Anomaly detection</h4>
+                    <p>Flags inventory or wastage activity that breaks sharply from a medicine's usual pattern.</p>
+                </div>
+                <div class="feat-card">
+                    <div class="feat-icon">♻️</div>
+                    <h4>Disposal tracking</h4>
+                    <p>Keeps an auditable trail from "flagged high-risk" to "safely disposed."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-alt" id="tech">
+        <div class="wrap">
+            <div class="section-head reveal">
+                <span class="eyebrow">Under The Hood</span>
+                <h2>Built on tools a judge can verify, not buzzwords.</h2>
+            </div>
+            <div class="tech-grid reveal">
+                <div class="tech-cell">
+                    <span class="cat">Frontend</span>
+                    <ul>
+                        <li>React.js</li>
+                        <li>HTML / CSS / JS</li>
+                    </ul>
+                </div>
+                <div class="tech-cell">
+                    <span class="cat">Backend</span>
+                    <ul>
+                        <li>Java</li>
+                        <li>Spring Boot</li>
+                        <li>REST APIs</li>
+                    </ul>
+                </div>
+                <div class="tech-cell">
+                    <span class="cat">Database</span>
+                    <ul>
+                        <li>MySQL / PostgreSQL</li>
+                    </ul>
+                </div>
+                <div class="tech-cell">
+                    <span class="cat">AI &amp; Vision</span>
+                    <ul>
+                        <li>Python</li>
+                        <li>OpenCV</li>
+                        <li>PaddleOCR / Tesseract</li>
+                        <li>ML risk &amp; forecast models</li>
+                    </ul>
+                </div>
+                <div class="tech-cell">
+                    <span class="cat">Deploy</span>
+                    <ul>
+                        <li>AWS / GCP / Azure</li>
+                        <li>Docker</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="note-card reveal" style="margin-top:28px;">
+                <span style="font-size:22px;">⚠️</span>
+                <p><b>Honest disclosure for the prototype stage</b>Without live pharmacy history, the risk and
+                    forecasting models are trained on a synthetic/controlled dataset. Real deployment needs validated
+                    historical pharmacy data before the risk score can be trusted in production.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-band" id="contact">
+        <div class="wrap">
+            <span class="eyebrow"
+                style="background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.2); color:#C9D1F0;">Smart
+                India Hackathon · Software</span>
+            <h2 style="margin-top:20px;">From expiry tracker to expiry-risk intelligence.</h2>
+            <p>MedSafe AI — Predictive Medicine Expiry &amp; Inventory Intelligence System.</p>
+            <a href="#architecture" class="btn-primary" style="background:var(--indigo);">Walk through the architecture
+                again ↑</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="wrap footer-inner">
+            <div class="footer-brand">
+                <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+                    <rect x="1" y="1" width="30" height="30" rx="9" fill="#3D4FD1" />
+                    <path d="M16 8v16M8 16h16" stroke="#0D1730" stroke-width="3" stroke-linecap="round" />
+                </svg>
+                MedSafe AI
+            </div>
+            <div class="foot-links">
+                <a href="#problem">Problem</a>
+                <a href="#not-ai">AI vs Rules</a>
+                <a href="#architecture">Architecture</a>
+                <a href="#features">Features</a>
+            </div>
+            <small>Prototype brief — Smart India Hackathon 2026</small>
+        </div>
+    </footer>
+
+    <script>
+        const revealEls = document.querySelectorAll('.reveal');
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+            });
+        }, { threshold: 0.14 });
+        revealEls.forEach(el => io.observe(el));
+    </script>
+
+</body>
+
+</html>
